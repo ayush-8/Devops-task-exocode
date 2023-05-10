@@ -1,0 +1,36 @@
+- hosts: all
+  vars:
+    github_repo_url: "https://github.com/ayush-8/Devops-task-exocode.git"
+    repo_path: "/var/www/"
+  tasks:
+    - name: install git
+      yum:
+        name:
+          - git
+          - npm
+        state: latest
+    - name: git Clone
+      git:
+        repo: "{{github_repo_url }}"
+        dest: "{{ repo_path }}"
+        force: yes
+
+
+    - name: Install packages based on package.json using the npm [Frontend]
+      npm:
+        path: "{{ repo_path }}/Frontend"
+    - name: Start
+      command: npm run dev -- --host &
+      args:
+        chdir: "{{ repo_path }}/Frontend"
+      async: 45
+      poll: 0
+    - name: Install packages based on package.json using the npm [Backend]
+      npm:
+        path: "{{ repo_path }}/Backend"
+    - name: Start
+      command: npm run dev
+      args:
+        chdir: "{{ repo_path }}/Backend"
+      async: 45
+      poll: 0
