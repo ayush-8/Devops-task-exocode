@@ -29,7 +29,7 @@
       npm:
         path: "{{ repo_path }}/Backend"
     - name: Start
-      command: npm run dev
+      command: node index.js
       args:
         chdir: "{{ repo_path }}/Backend"
       async: 45
